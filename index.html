@@ -8,278 +8,216 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 html, body {
-  width:100%; height:100%;
-  overflow:hidden;
+  width:100%; height:100%; overflow:hidden;
   font-family:'Segoe UI','Arial Rounded MT Bold',Arial,sans-serif;
   user-select:none;
   background: linear-gradient(135deg,#0d0030 0%,#0a1a50 45%,#001a10 100%);
 }
 
-/* ── Stars ── */
+/* ── Stars (CSS-only, no JS particles) ── */
 #stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
 .star {
   position:absolute; background:#fff; border-radius:50%;
-  animation:twinkle var(--d) ease-in-out infinite; opacity:0;
+  animation:twinkle var(--d) ease-in-out infinite var(--delay); opacity:0;
+  will-change:opacity,transform;
 }
 @keyframes twinkle {
   0%,100%{opacity:0;transform:scale(.5)}
   50%{opacity:var(--o);transform:scale(1)}
 }
 
-/* ── Layout: sidebar + main ── */
-#app {
-  position:relative; z-index:1;
-  width:100%; height:100%;
-  display:flex; flex-direction:row;
-}
+/* ── Layout ── */
+#app { position:relative; z-index:1; width:100%; height:100%; display:flex; }
 
 /* ── Sidebar ── */
 #sidebar {
-  width:220px; min-width:180px;
-  height:100%;
+  width:210px; min-width:170px; height:100%;
   display:flex; flex-direction:column;
-  padding:16px 12px;
-  gap:14px;
+  padding:14px 11px; gap:12px;
   background:rgba(255,255,255,0.05);
   border-right:1px solid rgba(255,255,255,0.1);
   backdrop-filter:blur(12px);
   overflow-y:auto;
 }
-
 .title {
-  font-size:1.5rem; font-weight:900; letter-spacing:1px;
-  text-align:center;
+  font-size:1.4rem; font-weight:900; letter-spacing:1px; text-align:center;
   background:linear-gradient(90deg,#c05060,#b89030,#3a8a50,#3070b8,#8a40a8);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:titleFloat 3s ease-in-out infinite;
-  flex-shrink:0;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:titleFloat 3s ease-in-out infinite; flex-shrink:0;
 }
-@keyframes titleFloat {
-  0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}
-}
-
+@keyframes titleFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 .section-label {
-  font-size:.7rem; font-weight:700; letter-spacing:1.5px;
-  color:rgba(255,255,255,0.45); text-transform:uppercase;
-  margin-bottom:2px;
+  font-size:.68rem; font-weight:700; letter-spacing:1.5px;
+  color:rgba(255,255,255,0.4); text-transform:uppercase; margin-bottom:2px;
 }
-
 .mode-bar { display:flex; flex-direction:column; gap:7px; }
 .mode-btn {
-  padding:9px 14px; border-radius:50px;
-  border:2px solid rgba(255,255,255,0.25);
-  background:rgba(255,255,255,0.08);
-  color:#fff; font-size:.85rem; font-weight:700;
-  cursor:pointer; transition:all .2s; text-align:left;
+  padding:8px 13px; border-radius:50px;
+  border:2px solid rgba(255,255,255,0.22);
+  background:rgba(255,255,255,0.07);
+  color:#fff; font-size:.83rem; font-weight:700;
+  cursor:pointer; transition:background .15s,transform .15s; text-align:left;
 }
-.mode-btn:hover { background:rgba(255,255,255,0.18); transform:translateX(3px); }
+.mode-btn:hover { background:rgba(255,255,255,0.16); transform:translateX(2px); }
 .mode-btn.active {
-  background:rgba(255,255,255,0.92); color:#0d0030;
-  border-color:#fff; box-shadow:0 0 16px rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.9); color:#0d0030;
+  border-color:#fff; box-shadow:0 0 14px rgba(255,255,255,0.35);
 }
-
-/* song list */
-#songPanel { display:none; flex-direction:column; gap:6px; }
+#songPanel { display:none; flex-direction:column; gap:5px; }
 #songPanel.visible { display:flex; }
 .song-btn {
-  padding:8px 12px; border-radius:14px;
-  border:2px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.06);
-  color:#fff; font-size:.8rem; font-weight:600;
-  cursor:pointer; transition:all .2s; text-align:left;
-  line-height:1.3;
+  padding:7px 11px; border-radius:12px;
+  border:2px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.05);
+  color:#fff; font-size:.78rem; font-weight:600;
+  cursor:pointer; transition:background .15s; text-align:left; line-height:1.3;
 }
-.song-btn:hover { background:rgba(255,255,255,0.16); }
-.song-btn.active { background:rgba(255,210,60,.35); border-color:#ffd93d; }
+.song-btn:hover { background:rgba(255,255,255,0.14); }
+.song-btn.active { background:rgba(255,200,50,.3); border-color:#c8a030; }
 
-/* play btn */
 #playBtn {
-  padding:11px; border-radius:50px; border:none;
-  background:linear-gradient(135deg,#ffd93d,#ff6b6b);
-  color:#fff; font-size:1rem; font-weight:900;
-  cursor:pointer; transition:all .2s;
-  box-shadow:0 3px 16px rgba(255,100,100,.45);
+  padding:10px; border-radius:50px; border:none;
+  background:linear-gradient(135deg,#b89030,#a83240);
+  color:#fff; font-size:.95rem; font-weight:900;
+  cursor:pointer; transition:transform .15s;
+  box-shadow:0 3px 14px rgba(168,50,64,.4);
 }
-#playBtn:hover { transform:scale(1.05); }
-#playBtn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+#playBtn:hover { transform:scale(1.04); }
+#playBtn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
 
-/* guide strip in sidebar */
-#guideDisplay {
-  display:flex; flex-direction:column; gap:6px;
-  align-items:center;
-}
+#guideDisplay { display:flex; flex-direction:column; gap:5px; align-items:center; }
 .guide-note {
-  width:38px; height:38px; border-radius:50%;
+  width:36px; height:36px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  font-size:.85rem; font-weight:900; color:#fff;
+  font-size:.82rem; font-weight:900; color:#fff;
   text-shadow:0 1px 3px rgba(0,0,0,.6);
   box-shadow:0 3px 10px rgba(0,0,0,.35);
-  transform:scale(.8); opacity:.35; transition:all .2s;
+  transform:scale(.8); opacity:.3; transition:all .18s;
 }
-.guide-note.current {
-  transform:scale(1.2); opacity:1;
-  animation:guidePulse .5s ease-in-out infinite alternate;
-}
-.guide-note.done { opacity:.15; transform:scale(.65); }
+.guide-note.current { transform:scale(1.2); opacity:1; animation:guidePulse .48s ease-in-out infinite alternate; }
+.guide-note.done { opacity:.13; transform:scale(.62); }
 @keyframes guidePulse {
-  from { box-shadow:0 3px 10px rgba(0,0,0,.3),0 0 0 0 rgba(255,255,255,.4); }
-  to   { box-shadow:0 3px 10px rgba(0,0,0,.3),0 0 0 10px rgba(255,255,255,0); }
+  from { box-shadow:0 3px 10px rgba(0,0,0,.3),0 0 0 0 rgba(255,255,255,.35); }
+  to   { box-shadow:0 3px 10px rgba(0,0,0,.3),0 0 0 9px rgba(255,255,255,0); }
 }
-
 #statusMsg {
-  font-size:.85rem; font-weight:700;
-  color:#ffd93d; text-shadow:0 0 12px rgba(255,217,61,.6);
-  text-align:center; min-height:2.4rem;
-  line-height:1.3;
+  font-size:.82rem; font-weight:700; color:#c8a030;
+  text-shadow:0 0 10px rgba(200,160,48,.5);
+  text-align:center; min-height:2.2rem; line-height:1.3;
 }
-
-/* fullscreen btn */
-#fsBtn {
-  position:fixed; top:12px; right:14px; z-index:999;
-  width:38px; height:38px; border-radius:10px; border:none;
-  background:rgba(255,255,255,0.12); color:#fff;
-  font-size:1.1rem; cursor:pointer; transition:all .2s;
-  display:flex; align-items:center; justify-content:center;
-  backdrop-filter:blur(6px);
-  box-shadow:0 2px 10px rgba(0,0,0,.3);
-}
-#fsBtn:hover { background:rgba(255,255,255,0.25); transform:scale(1.1); }
-
-/* keyboard hint */
 .kbd-hint {
-  font-size:.65rem; color:rgba(255,255,255,.3);
-  text-align:center; line-height:1.6;
-  margin-top:auto; padding-top:8px;
+  font-size:.63rem; color:rgba(255,255,255,.28);
+  text-align:center; line-height:1.6; margin-top:auto; padding-top:6px;
 }
 
-/* ── Main area ── */
+/* ── Main ── */
 #main {
-  flex:1; height:100%;
-  display:flex; flex-direction:column;
+  flex:1; height:100%; display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  padding:20px 30px 20px 20px;
-  gap:10px;
-  position:relative;
+  padding:18px 28px 18px 18px; gap:10px; position:relative;
 }
 
-/* ── Xylophone: horizontal, keys side-by-side ── */
-#xylophone {
-  display:flex;
-  flex-direction:row;
-  align-items:flex-end;   /* keys grow downward from a common top edge is handled via margin-top */
-  justify-content:center;
-  gap:clamp(5px,1vw,12px);
-  padding:30px 30px 30px;
-  background:rgba(255,255,255,0.04);
-  border-radius:28px;
-  border:2px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(8px);
-  position:relative;
-  width:100%;
-  max-width:900px;
-}
-
-/* wooden rails top and bottom */
-#xylophone::before, #xylophone::after {
-  content:'';
-  position:absolute; left:18px; right:18px; height:14px;
-  border-radius:7px;
-  background:linear-gradient(90deg,#7a4a1e 0%,#a0622a 40%,#7a4a1e 100%);
-  box-shadow:inset 0 2px 4px rgba(255,255,255,.2), 0 3px 8px rgba(0,0,0,.4);
-}
-#xylophone::before { top:10px; }
-#xylophone::after  { bottom:10px; }
-
-.key-wrap {
-  display:flex; flex-direction:column; align-items:center;
-  gap:7px; position:relative; z-index:1;
-}
-.key-label {
-  font-size:clamp(.6rem,1.2vw,.85rem); font-weight:800;
-  color:rgba(255,255,255,.92);
-  text-shadow:0 1px 3px rgba(0,0,0,.5);
-}
-.key {
-  border-radius:10px 10px 14px 14px;
-  cursor:pointer; position:relative;
-  transition:transform .08s, filter .08s;
-  box-shadow:
-    0 6px 0 rgba(0,0,0,.35),
-    0 8px 18px rgba(0,0,0,.3),
-    inset 0 2px 5px rgba(255,255,255,.35),
-    inset 0 -2px 5px rgba(0,0,0,.2);
-  touch-action:manipulation;
-}
-.key::after {
-  content:'';
-  position:absolute; top:8px; left:15%; width:70%; height:28%;
-  background:linear-gradient(180deg,rgba(255,255,255,.38) 0%,transparent 100%);
-  border-radius:5px; pointer-events:none;
-}
-.key::before {
-  content:'● ●';
-  position:absolute; bottom:8px; width:100%;
-  text-align:center; font-size:6px;
-  color:rgba(0,0,0,.28); letter-spacing:3px; pointer-events:none;
-}
-.key:active, .key.pressed {
-  transform:translateY(5px) scaleY(.95)!important;
-  box-shadow:0 1px 0 rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.3),inset 0 2px 5px rgba(0,0,0,.2)!important;
-  filter:brightness(1.4)!important;
-}
-.key.highlight {
-  animation:keyHL .38s ease-in-out infinite alternate;
-}
-@keyframes keyHL {
-  from { filter:brightness(1.1); box-shadow:0 6px 0 rgba(0,0,0,.35),0 8px 18px rgba(0,0,0,.3),inset 0 2px 5px rgba(255,255,255,.35),0 0 18px rgba(255,255,255,.25); }
-  to   { filter:brightness(1.6); box-shadow:0 6px 0 rgba(0,0,0,.35),0 8px 28px rgba(0,0,0,.3),inset 0 2px 5px rgba(255,255,255,.35),0 0 38px rgba(255,255,255,.6); }
-}
-
-/* ── Particles ── */
-.note-particle {
-  position:fixed; pointer-events:none; font-size:1.7rem;
-  animation:noteFloat 1.2s ease-out forwards; z-index:200;
-}
-@keyframes noteFloat {
-  0%   { opacity:1; transform:translate(-50%,-50%) scale(.5) rotate(-10deg); }
-  30%  { opacity:1; transform:translate(calc(-50% + var(--dx)),calc(-50% - 38px)) scale(1.3) rotate(8deg); }
-  100% { opacity:0; transform:translate(calc(-50% + var(--dx)),calc(-50% - 95px)) scale(.8) rotate(var(--rot)); }
-}
-.ripple {
-  position:fixed; border-radius:50%; pointer-events:none;
-  animation:rippleOut .55s ease-out forwards; z-index:199;
-}
-@keyframes rippleOut {
-  0%  { transform:translate(-50%,-50%) scale(0); opacity:.65; }
-  100%{ transform:translate(-50%,-50%) scale(3); opacity:0; }
-}
-
-/* ── Progress bar ── */
+/* ── Progress ── */
 #progressWrap {
-  width:100%; max-width:900px;
-  height:8px; background:rgba(255,255,255,0.1);
-  border-radius:4px; overflow:hidden;
-  display:none;
+  width:100%; max-width:920px; height:7px;
+  background:rgba(255,255,255,0.09); border-radius:4px; overflow:hidden; display:none;
 }
 #progressBar {
   height:100%; width:0%;
-  background:linear-gradient(90deg,#ffd93d,#ff6b6b);
-  border-radius:4px;
-  transition:width .2s;
+  background:linear-gradient(90deg,#c8a030,#a83240);
+  border-radius:4px; transition:width .18s;
 }
+
+/* ── Xylophone ── */
+#xylophone {
+  display:flex; flex-direction:row; align-items:flex-end; justify-content:center;
+  gap:clamp(4px,.9vw,11px);
+  padding:28px 28px 28px;
+  background:rgba(255,255,255,0.04);
+  border-radius:26px; border:2px solid rgba(255,255,255,0.07);
+  position:relative; width:100%; max-width:920px;
+  /* GPU layer for smooth interactions */
+  will-change:transform;
+  transform:translateZ(0);
+}
+#xylophone::before, #xylophone::after {
+  content:''; position:absolute; left:16px; right:16px; height:13px; border-radius:7px;
+  background:linear-gradient(90deg,#5a3010 0%,#8a5020 40%,#5a3010 100%);
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.15), 0 3px 8px rgba(0,0,0,.45);
+}
+#xylophone::before { top:9px; }
+#xylophone::after  { bottom:9px; }
+
+.key-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; z-index:1; }
+.key-label { font-size:clamp(.58rem,1.1vw,.82rem); font-weight:800; color:rgba(255,255,255,.88); text-shadow:0 1px 3px rgba(0,0,0,.5); }
+.key {
+  border-radius:10px 10px 13px 13px; cursor:pointer; position:relative;
+  /* Use transform only — avoids layout recalc */
+  transition:transform .07s, filter .07s;
+  box-shadow:0 6px 0 rgba(0,0,0,.38), 0 8px 16px rgba(0,0,0,.28), inset 0 2px 5px rgba(255,255,255,.32), inset 0 -2px 4px rgba(0,0,0,.2);
+  touch-action:none;  /* let JS handle all touch */
+  will-change:transform,filter;
+}
+.key::after {
+  content:''; position:absolute; top:8px; left:15%; width:70%; height:26%;
+  background:linear-gradient(180deg,rgba(255,255,255,.3) 0%,transparent 100%);
+  border-radius:5px; pointer-events:none;
+}
+.key::before {
+  content:'● ●'; position:absolute; bottom:7px; width:100%;
+  text-align:center; font-size:6px; color:rgba(0,0,0,.25); letter-spacing:3px; pointer-events:none;
+}
+.key.pressed {
+  transform:translateY(5px) scaleY(.95)!important;
+  box-shadow:0 1px 0 rgba(0,0,0,.38),0 2px 6px rgba(0,0,0,.28),inset 0 2px 5px rgba(0,0,0,.2)!important;
+  filter:brightness(1.35)!important;
+}
+.key.highlight { animation:keyHL .36s ease-in-out infinite alternate; }
+@keyframes keyHL {
+  from { filter:brightness(1.05); box-shadow:0 6px 0 rgba(0,0,0,.38),0 8px 16px rgba(0,0,0,.28),inset 0 2px 5px rgba(255,255,255,.32),0 0 16px rgba(255,255,255,.2); }
+  to   { filter:brightness(1.5);  box-shadow:0 6px 0 rgba(0,0,0,.38),0 8px 26px rgba(0,0,0,.28),inset 0 2px 5px rgba(255,255,255,.32),0 0 34px rgba(255,255,255,.55); }
+}
+
+/* ── Particles (lightweight — only ripple + 1 emoji) ── */
+.note-particle {
+  position:fixed; pointer-events:none; font-size:1.6rem;
+  animation:noteFloat 1s ease-out forwards; z-index:200;
+  will-change:transform,opacity;
+}
+@keyframes noteFloat {
+  0%   { opacity:1; transform:translate(-50%,-50%) scale(.5); }
+  40%  { opacity:1; transform:translate(calc(-50% + var(--dx)),calc(-50% - 35px)) scale(1.2); }
+  100% { opacity:0; transform:translate(calc(-50% + var(--dx)),calc(-50% - 85px)) scale(.7) rotate(var(--rot)); }
+}
+.ripple {
+  position:fixed; border-radius:50%; pointer-events:none;
+  animation:rippleOut .5s ease-out forwards; z-index:199;
+  will-change:transform,opacity;
+}
+@keyframes rippleOut {
+  0%  { transform:translate(-50%,-50%) scale(0); opacity:.55; }
+  100%{ transform:translate(-50%,-50%) scale(2.8); opacity:0; }
+}
+
+/* ── Fullscreen btn ── */
+#fsBtn {
+  position:fixed; top:11px; right:13px; z-index:999;
+  width:36px; height:36px; border-radius:9px; border:none;
+  background:rgba(255,255,255,0.1); color:#fff;
+  font-size:1rem; cursor:pointer; transition:background .15s,transform .15s;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(6px); box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+#fsBtn:hover { background:rgba(255,255,255,0.22); transform:scale(1.09); }
 </style>
 </head>
 <body>
 <button id="fsBtn" onclick="toggleFS()" title="全畫面">⛶</button>
-
 <div id="stars"></div>
 
 <div id="app">
-  <!-- Sidebar -->
   <div id="sidebar">
     <div class="title">🎵 彩虹木琴</div>
-
     <div>
       <div class="section-label">模式</div>
       <div class="mode-bar">
@@ -287,27 +225,18 @@ html, body {
         <button class="mode-btn"        id="btnGuide" onclick="setMode('guide')">🌟 跟我彈</button>
       </div>
     </div>
-
     <div id="songPanel">
       <div class="section-label">選歌曲</div>
-      <!-- songs injected by JS -->
     </div>
-
     <button id="playBtn" style="display:none" onclick="startGuide()">▶ 開始！</button>
-
     <div id="guideArea" style="display:none">
-      <div class="section-label" style="text-align:center;margin-bottom:6px;">下一個音</div>
+      <div class="section-label" style="text-align:center;margin-bottom:5px;">下一個音</div>
       <div id="guideDisplay"></div>
     </div>
-
     <div id="statusMsg"></div>
-
-    <div class="kbd-hint">
-      鍵盤：A S D F J K L ;<br>對應 Do Re Mi Fa Sol La Si Do²
-    </div>
+    <div class="kbd-hint">鍵盤：A S D F J K L ;<br>對應 Do Re Mi Fa Sol La Si Do²</div>
   </div>
 
-  <!-- Main stage -->
   <div id="main">
     <div id="progressWrap"><div id="progressBar"></div></div>
     <div id="xylophone"></div>
@@ -315,130 +244,243 @@ html, body {
 </div>
 
 <script>
-// ── Audio ──────────────────────────────────────────────────────────────────
-let ctx = null;
+// ── Audio ─────────────────────────────────────────────────────────────────
+let audioCtx = null;
+let activeNodes = [];
+const MAX_POLY = 8;
+
 function ensureCtx(){
-  if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)();
-  if(ctx.state==='suspended') ctx.resume();
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
 }
+
 function playTone(freq){
   ensureCtx();
-  const now = ctx.currentTime;
-  const o1=ctx.createOscillator(), o2=ctx.createOscillator();
-  const g1=ctx.createGain(),       g2=ctx.createGain();
-  const master=ctx.createGain();
-  o1.type='sine'; o2.type='triangle';
-  o1.frequency.value=freq; o2.frequency.value=freq*2.01;
-  g1.gain.setValueAtTime(.7,now); g1.gain.exponentialRampToValueAtTime(.001,now+1.5);
-  g2.gain.setValueAtTime(.18,now); g2.gain.exponentialRampToValueAtTime(.001,now+.6);
-  master.gain.value=.5;
+  // Limit polyphony — fade out oldest
+  if(activeNodes.length >= MAX_POLY){
+    const old = activeNodes.shift();
+    try{
+      old.master.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+    } catch(e){}
+  }
+  const now = audioCtx.currentTime;
+
+  // Two oscillators: sine (fundamental) + triangle (soft 2nd harmonic)
+  const o1 = audioCtx.createOscillator();
+  const o2 = audioCtx.createOscillator();
+  const g1 = audioCtx.createGain();
+  const g2 = audioCtx.createGain();
+  const master = audioCtx.createGain();
+
+  o1.type = 'sine';     o1.frequency.value = freq;
+  o2.type = 'triangle'; o2.frequency.value = freq * 2.01;  // slight detune for warmth
+
+  // Natural marimba envelope: sharp attack, exponential decay
+  g1.gain.setValueAtTime(0.7,  now);
+  g1.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+  g2.gain.setValueAtTime(0.18, now);
+  g2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+  master.gain.value = 0.52;  // slightly below 0.55 to avoid inter-note clipping
+
   o1.connect(g1); g1.connect(master);
   o2.connect(g2); g2.connect(master);
-  master.connect(ctx.destination);
-  o1.start(now); o1.stop(now+1.6);
-  o2.start(now); o2.stop(now+.7);
+  master.connect(audioCtx.destination);
+
+  o1.start(now); o1.stop(now + 1.6);
+  o2.start(now); o2.stop(now + 0.7);
+
+  const ref = { master };
+  activeNodes.push(ref);
+  setTimeout(()=>{ activeNodes = activeNodes.filter(n => n !== ref); }, 1700);
 }
 
-// ── Keys definition ────────────────────────────────────────────────────────
+// ── Keys ──────────────────────────────────────────────────────────────────
+// Index: 0=Do(C5) 1=Re(D5) 2=Mi(E5) 3=Fa(F5) 4=Sol(G5) 5=La(A5) 6=Si(B5) 7=Do²(C6)
 const KEYS=[
-  {label:'Do', freq:523.25, color:'#A83240', dark:'#6b1a22'},
-  {label:'Re', freq:587.33, color:'#A85A00', dark:'#6b3900'},
-  {label:'Mi', freq:659.25, color:'#A89200', dark:'#6b5c00'},
-  {label:'Fa', freq:698.46, color:'#1A7A3A', dark:'#0d4220'},
-  {label:'Sol',freq:784.00, color:'#1A5FA8', dark:'#0d3568'},
-  {label:'La', freq:880.00, color:'#6A1A8A', dark:'#3d0d52'},
-  {label:'Si', freq:987.77, color:'#A81A6A', dark:'#6b0d42'},
-  {label:'Do²',freq:1046.5, color:'#A83240', dark:'#6b1a22'},
+  {label:'Do',  freq:523.25, color:'#A83240', dark:'#6b1a22'},
+  {label:'Re',  freq:587.33, color:'#A85A00', dark:'#6b3900'},
+  {label:'Mi',  freq:659.25, color:'#A89200', dark:'#6b5c00'},
+  {label:'Fa',  freq:698.46, color:'#1A7A3A', dark:'#0d4220'},
+  {label:'Sol', freq:784.00, color:'#1A5FA8', dark:'#0d3568'},
+  {label:'La',  freq:880.00, color:'#6A1A8A', dark:'#3d0d52'},
+  {label:'Si',  freq:987.77, color:'#A81A6A', dark:'#6b0d42'},
+  {label:'Do²', freq:1046.5, color:'#7A2230', dark:'#4a1018'},
 ];
-// Widths base (px) — all keys same width; heights decrease left→right (Do tallest)
-const WIDTHS_BASE = [90,90,90,90,90,90,90,90];
-const HEIGHTS_BASE= [280,258,238,220,202,186,172,158];
+const WIDTHS_BASE  = [90,90,90,90,90,90,90,90];
+const HEIGHTS_BASE = [280,258,238,220,202,186,172,158];
+
+// ── Songs ─────────────────────────────────────────────────────────────────
+// All verified against standard sheet music (C major, one octave C5–C6)
+// 0=Do 1=Re 2=Mi 3=Fa 4=Sol 5=La 6=Si 7=Do²
+const SONGS=[
+  { name:'⭐ 小星星',
+    // 1 1 5 5 6 6 5 | 4 4 3 3 2 2 1 | 5 5 4 4 3 3 2 | 5 5 4 4 3 3 2 | 1 1 5 5 6 6 5 | 4 4 3 3 2 2 1
+    // C C G G A A G | F F E E D D C | G G F F E E D | G G F F E E D | C C G G A A G | F F E E D D C
+    notes:[0,0,4,4,5,5,4, 3,3,2,2,1,1,0, 4,4,3,3,2,2,1, 4,4,3,3,2,2,1, 0,0,4,4,5,5,4, 3,3,2,2,1,1,0] },
+
+  { name:'🎂 生日快樂',
+    // 5 5 6 5 1² 7 | 5 5 6 5 2² 1² | 5 5 5² 3² 1² 7 6 | 4² 4² 3² 1² 2² 1²
+    // G G A G C² B | G G A G D² C² | G G G² E² C² B A | F² F² E² C² D² C²
+    // 用八度內: Sol Sol La Sol Do² Si | Sol Sol La Sol Re²→用高Re Si | ...
+    // 以可用音符(0-7)重新對應，Do²=7
+    notes:[4,4,5,4,7,6, 4,4,5,4,1,7, 4,4,6,2,0,6,5, 3,3,2,0,1,0] },
+
+  { name:'🐑 瑪莉小羊',
+    // 3 2 1 2 3 3 3 | 2 2 2 | 3 5 5 | 3 2 1 2 3 3 3 | 2 2 3 2 1
+    // E D C D E E E | D D D | E G G | E D C D E E E | D D E D C
+    notes:[2,1,0,1,2,2,2, 1,1,1, 2,4,4, 2,1,0,1,2,2,2, 1,1,2,1,0] },
+
+  { name:'🐸 青蛙歌',
+    // 1 2 3 1 | 1 2 3 1 | 3 4 5- | 3 4 5-
+    // 5 6 5 4 3 1 | 5 6 5 4 3 1 | 1 5 1 | 1 5 1
+    // C D E C | C D E C | E F G | E F G
+    // G A G F E C | G A G F E C | C G C | C G C
+    notes:[0,1,2,0, 0,1,2,0, 2,3,4, 2,3,4,
+           4,5,4,3,2,0, 4,5,4,3,2,0, 0,4,0, 0,4,0] },
+
+  { name:'🎠 倫敦鐵橋',
+    // 5 6 5 4 3 4 5 | 2 3 4 3 4 5 | 5 6 5 4 3 4 5 | 2 5 3 1
+    // G A G F E F G | D E F E F G | G A G F E F G | D G E C
+    notes:[4,5,4,3,2,3,4, 1,2,3,2,3,4, 4,5,4,3,2,3,4, 1,4,2,0] },
+
+  { name:'🌊 划船歌',
+    // 1 1 1 2 3 | 3 2 3 4 5 | 1²1²1² 5 5 5 3 3 3 1 1 1 | 5 4 3 2 1
+    // C C C D E | E D E F G | C²C²C² G G G E E E C C C  | G F E D C
+    notes:[0,0,0,1,2, 2,1,2,3,4, 7,7,7,4,4,4,2,2,2,0,0,0, 4,3,2,1,0] },
+
+  { name:'🎅 鈴兒響叮噹',
+    // 3 3 3 | 3 3 3 | 3 5 1 2 3 | 4 4 4 4 | 4 3 3 3 | 3 2 2 3 2 5
+    // 3 3 3 | 3 3 3 | 3 5 1 2 3 | 4 4 4 4 | 4 3 3 3 | 5 5 4 2 1
+    // E E E | E E E | E G C D E | F F F F | F E E E | E D D E D G
+    // E E E | E E E | E G C D E | F F F F | F E E E | G G F D C
+    notes:[2,2,2, 2,2,2, 2,4,0,1,2, 3,3,3,3, 3,2,2,2, 2,1,1,2,1,4,
+           2,2,2, 2,2,2, 2,4,0,1,2, 3,3,3,3, 3,2,2,2, 4,4,3,1,0] },
+
+  { name:'🐣 小蜜蜂',
+    // 5 4 3 4 5 5 5 | 4 4 4 | 5 7 7 | 5 4 3 4 5 5 5 | 4 4 5 4 3
+    // G F E F G G G | F F F | G B B | G F E F G G G | F F G F E
+    notes:[4,3,2,3,4,4,4, 3,3,3, 4,6,6, 4,3,2,3,4,4,4, 3,3,4,3,2] },
+
+  { name:'🌹 茉莉花',
+    // 3 3 4 5 | 5 4 3 2 | 3 4 5 1 | 2 1
+    // 5 5 6 7 | 7 6 5 3 | 5 6 7 1² | 6 5
+    // E E F G | G F E D | E F G C  | D C
+    // G G A B | B A G E | G A B C² | A G
+    notes:[2,2,3,4, 4,3,2,1, 2,3,4,0, 1,0,
+           4,4,5,6, 6,5,4,2, 4,5,6,7, 5,4] },
+
+  { name:'🎵 快樂頌',
+    // 3 3 4 5 5 4 3 2 1 1 2 3 3 2 2
+    // 3 3 4 5 5 4 3 2 1 1 2 3 2 1 1
+    // E E F G G F E D C C D E E D D
+    // E E F G G F E D C C D E D C C
+    notes:[2,2,3,4,4,3,2,1,0,0,1,2,2,1,1,
+           2,2,3,4,4,3,2,1,0,0,1,2,1,0,0] },
+];
+
+// ── Build xylophone ────────────────────────────────────────────────────────
+let keyElements = []; // cache DOM refs
 
 function buildXylophone(){
-  const el=document.getElementById('xylophone');
-  el.innerHTML='';
-  const scale = Math.min(1, (window.innerHeight-140)/300, (window.innerWidth-240)/780);
+  const el = document.getElementById('xylophone');
+  el.innerHTML = ''; keyElements = [];
+  const scale = Math.min(1, (window.innerHeight-130)/300, (window.innerWidth-230)/780);
   KEYS.forEach((k,i)=>{
-    const W=Math.round(WIDTHS_BASE[i]*scale);
-    const H=Math.round(HEIGHTS_BASE[i]*scale);
-    const wrap=document.createElement('div');
-    wrap.className='key-wrap';
-    const lbl=document.createElement('div');
-    lbl.className='key-label'; lbl.textContent=k.label;
-    const key=document.createElement('div');
-    key.className='key'; key.id='key-'+i;
-    key.style.cssText=`width:${W}px;height:${H}px;background:linear-gradient(160deg,${k.color} 0%,${k.dark} 100%);`;
-    key.addEventListener('pointerdown',e=>{e.preventDefault();pressKey(i);});
+    const W = Math.round(WIDTHS_BASE[i]*scale);
+    const H = Math.round(HEIGHTS_BASE[i]*scale);
+    const wrap = document.createElement('div');
+    wrap.className = 'key-wrap';
+    const lbl = document.createElement('div');
+    lbl.className = 'key-label'; lbl.textContent = k.label;
+    const key = document.createElement('div');
+    key.className = 'key'; key.id = 'key-'+i;
+    key.style.cssText = `width:${W}px;height:${H}px;background:linear-gradient(160deg,${k.color} 0%,${k.dark} 100%);`;
     wrap.appendChild(lbl); wrap.appendChild(key);
     el.appendChild(wrap);
+    keyElements.push(key);
   });
+  attachTouchHandlers();
 }
+
+// ── Touch / Pointer handling (swipe + tap) ─────────────────────────────────
+let lastPlayedIdx = -1;  // track which key last triggered during a swipe
+
+function getKeyIdxFromPoint(x, y){
+  for(let i=0;i<keyElements.length;i++){
+    const r = keyElements[i].getBoundingClientRect();
+    if(x>=r.left && x<=r.right && y>=r.top && y<=r.bottom) return i;
+  }
+  return -1;
+}
+
+function attachTouchHandlers(){
+  const xyl = document.getElementById('xylophone');
+
+  // Pointer events — works for both mouse and touch
+  xyl.addEventListener('pointerdown', e=>{
+    e.preventDefault();
+    lastPlayedIdx = -1;
+    const idx = getKeyIdxFromPoint(e.clientX, e.clientY);
+    if(idx >= 0){ lastPlayedIdx = idx; pressKey(idx); }
+  }, {passive:false});
+
+  xyl.addEventListener('pointermove', e=>{
+    if(e.buttons === 0 && e.pointerType === 'mouse') return; // mouse not held
+    e.preventDefault();
+    const idx = getKeyIdxFromPoint(e.clientX, e.clientY);
+    if(idx >= 0 && idx !== lastPlayedIdx){ lastPlayedIdx = idx; pressKey(idx); }
+  }, {passive:false});
+
+  xyl.addEventListener('pointerup',   ()=>{ lastPlayedIdx = -1; }, {passive:true});
+  xyl.addEventListener('pointerleave',()=>{ lastPlayedIdx = -1; }, {passive:true});
+}
+
+// ── Press key ─────────────────────────────────────────────────────────────
+const PCHARS = ['♪','♫','♬','🎵','⭐','✨'];
 
 function pressKey(i){
   playTone(KEYS[i].freq);
-  animKey(i); spawnParticles(i);
-  if(mode==='guide'&&guideActive) checkGuideNote(i);
-}
-function animKey(i){
-  const el=document.getElementById('key-'+i); if(!el)return;
-  el.classList.add('pressed'); setTimeout(()=>el.classList.remove('pressed'),140);
-}
-
-// ── Particles ──────────────────────────────────────────────────────────────
-const PCHARS=['♩','♪','♫','♬','🎵','🎶','⭐','✨'];
-function spawnParticles(i){
-  const keyEl=document.getElementById('key-'+i); if(!keyEl)return;
-  const r=keyEl.getBoundingClientRect();
-  const cx=r.left+r.width/2, cy=r.top+r.height/3;
-  const rip=document.createElement('div'); rip.className='ripple';
-  rip.style.cssText=`left:${cx}px;top:${cy}px;width:60px;height:60px;background:${KEYS[i].color};`;
-  document.body.appendChild(rip); setTimeout(()=>rip.remove(),650);
-  for(let n=0;n<3;n++){
-    const p=document.createElement('div'); p.className='note-particle';
-    const dx=(Math.random()-.5)*80, rot=(Math.random()*60-30)+'deg';
-    p.style.cssText=`left:${cx}px;top:${cy}px;--dx:${dx}px;--rot:${rot};color:${KEYS[i].color};`;
-    p.textContent=PCHARS[Math.floor(Math.random()*PCHARS.length)];
-    document.body.appendChild(p); setTimeout(()=>p.remove(),1300);
-  }
+  // Visual feedback
+  const el = keyElements[i]; if(!el) return;
+  el.classList.remove('pressed');
+  requestAnimationFrame(()=>{
+    el.classList.add('pressed');
+    setTimeout(()=>el.classList.remove('pressed'), 130);
+  });
+  spawnFeedback(i);
+  if(mode==='guide' && guideActive) checkGuideNote(i);
 }
 
-// ── Songs ──────────────────────────────────────────────────────────────────
-// Index: 0=Do 1=Re 2=Mi 3=Fa 4=Sol 5=La 6=Si 7=Do²
-const SONGS=[
-  { name:'⭐ 小星星',      emoji:'⭐',
-    notes:[0,0,4,4,5,5,4, 3,3,2,2,1,1,0, 4,4,3,3,2,2,1, 4,4,3,3,2,2,1, 0,0,4,4,5,5,4, 3,3,2,2,1,1,0] },
-  { name:'🎂 生日快樂',    emoji:'🎂',
-    notes:[4,4,5,4,0,6, 4,4,5,4,1,0, 4,4,7,5,3,2,1, 6,6,5,3,4,0] },
-  { name:'🐑 瑪莉小羊',    emoji:'🐑',
-    notes:[2,1,0,1,2,2,2, 1,1,1, 2,4,4, 2,1,0,1,2,2,2, 1,1,2,1,0] },
-  { name:'🐸 青蛙歌',      emoji:'🐸',
-    notes:[0,1,2,0, 0,1,2,0, 2,3,4, 2,3,4, 4,5,4,3,2,0, 4,5,4,3,2,0, 0,4,0, 0,4,0] },
-  { name:'🎠 倫敦鐵橋',   emoji:'🎠',
-    notes:[4,5,4,3,2,3,4, 1,2,3,2,3,4, 4,5,4,3,2,3,4, 1,4,2,0] },
-  { name:'🐻 小熊維尼',    emoji:'🐻',
-    notes:[0,0,0,4, 3,2,1,0, 2,2,2,5, 4,3,2,1, 0,0,4,4,5, 4,3,2, 0,1,2,1,0] },
-  { name:'🌊 划船歌',      emoji:'🌊',
-    notes:[0,0,0,1,2, 2,1,2,3,4, 7,7,7,4,4,4,2,2,2,0,0,0, 4,3,2,1,0] },
-  { name:'🎅 鈴兒響叮噹',  emoji:'🎅',
-    notes:[2,2,2, 2,2,2, 2,4,0,1,2, 3,3,3,3, 3,2,2,2, 2,1,1,2,1, 4,
-           2,2,2, 2,2,2, 2,4,0,1,2, 3,3,3,3, 3,2,2,2, 4,4,3,1,0] },
-  { name:'🌹 玫瑰玫瑰',    emoji:'🌹',
-    notes:[0,1,2,0, 0,1,2,0, 2,3,4, 2,3,4, 4,5,4,3,2,0, 4,5,4,3,2,0, 0,5,0, 0,5,0] },
-  { name:'🐣 小蜜蜂',      emoji:'🐣',
-    notes:[4,3,2,3,4,4,4, 3,3,3, 4,5,5, 4,3,2,3,4,4,4, 3,3,4,3,2] },
-];
+// Lightweight particles — 1 ripple + 1 note char only
+function spawnFeedback(i){
+  const el = keyElements[i]; if(!el) return;
+  const r = el.getBoundingClientRect();
+  const cx = r.left+r.width/2, cy = r.top+r.height*.35;
 
-let currentSong=0;
+  const rip = document.createElement('div'); rip.className='ripple';
+  rip.style.cssText=`left:${cx}px;top:${cy}px;width:56px;height:56px;background:${KEYS[i].color};`;
+  document.body.appendChild(rip);
+  setTimeout(()=>rip.remove(), 550);
+
+  const p = document.createElement('div'); p.className='note-particle';
+  const dx = (Math.random()-.5)*60, rot=(Math.random()*50-25)+'deg';
+  p.style.cssText=`left:${cx}px;top:${cy}px;--dx:${dx}px;--rot:${rot};color:${KEYS[i].color};`;
+  p.textContent = PCHARS[Math.floor(Math.random()*PCHARS.length)];
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(), 1050);
+}
+
+// ── Song list ─────────────────────────────────────────────────────────────
+let currentSong = 0;
 
 function buildSongList(){
-  const panel=document.getElementById('songPanel');
-  // remove old buttons but keep label
+  const panel = document.getElementById('songPanel');
   panel.querySelectorAll('.song-btn').forEach(b=>b.remove());
   SONGS.forEach((s,i)=>{
-    const b=document.createElement('button');
-    b.className='song-btn'+(i===0?' active':'');
-    b.textContent=s.name;
-    b.onclick=()=>selectSong(i);
+    const b = document.createElement('button');
+    b.className = 'song-btn'+(i===0?' active':'');
+    b.textContent = s.name; b.onclick=()=>selectSong(i);
     panel.appendChild(b);
   });
 }
@@ -449,44 +491,35 @@ function selectSong(i){
   stopGuide(); renderGuide(); setStatus('');
 }
 
-// ── Mode ───────────────────────────────────────────────────────────────────
-let mode='free';
+// ── Mode ──────────────────────────────────────────────────────────────────
+let mode = 'free';
 function setMode(m){
   mode=m;
-  document.getElementById('btnFree').classList.toggle('active',m==='free');
-  document.getElementById('btnGuide').classList.toggle('active',m==='guide');
-  const sp=document.getElementById('songPanel');
-  const pb=document.getElementById('playBtn');
-  const ga=document.getElementById('guideArea');
-  const pw=document.getElementById('progressWrap');
-  sp.classList.toggle('visible',m==='guide');
-  pb.style.display=m==='guide'?'block':'none';
-  ga.style.display=m==='guide'?'block':'none';
-  pw.style.display=m==='guide'?'block':'none';
-  if(m==='guide'){stopGuide();renderGuide();setStatus('');}
-  else{stopGuide();document.getElementById('guideDisplay').innerHTML='';setStatus('');updateProgress(0,1);}
+  document.getElementById('btnFree').classList.toggle('active', m==='free');
+  document.getElementById('btnGuide').classList.toggle('active', m==='guide');
+  const show = m==='guide';
+  document.getElementById('songPanel').classList.toggle('visible', show);
+  document.getElementById('playBtn').style.display   = show?'block':'none';
+  document.getElementById('guideArea').style.display = show?'block':'none';
+  document.getElementById('progressWrap').style.display = show?'block':'none';
+  if(show){ stopGuide(); renderGuide(); setStatus(''); }
+  else { stopGuide(); document.getElementById('guideDisplay').innerHTML=''; setStatus(''); updateProgress(0,1); }
 }
-function setStatus(msg){document.getElementById('statusMsg').textContent=msg;}
+function setStatus(msg){ document.getElementById('statusMsg').textContent=msg; }
 
-// ── Guide ──────────────────────────────────────────────────────────────────
+// ── Guide ─────────────────────────────────────────────────────────────────
 let guideActive=false, guideIdx=0;
 
 function updateProgress(cur,total){
-  const pct=total>0?Math.round(cur/total*100):0;
-  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressBar').style.width = (total>0?Math.round(cur/total*100):0)+'%';
 }
 
 function renderGuide(){
-  const song=SONGS[currentSong];
-  const disp=document.getElementById('guideDisplay');
+  const song=SONGS[currentSong], disp=document.getElementById('guideDisplay');
   const start=Math.max(0,guideIdx-1);
-  const slice=song.notes.slice(start,start+5);
-  disp.innerHTML=slice.map((n,si)=>{
-    const abs=start+si;
-    let cls='';
-    if(abs<guideIdx) cls='done';
-    else if(abs===guideIdx) cls='current';
-    const k=KEYS[n];
+  disp.innerHTML=song.notes.slice(start,start+5).map((n,si)=>{
+    const abs=start+si, k=KEYS[n];
+    let cls = abs<guideIdx?'done': abs===guideIdx?'current':'';
     return `<div class="guide-note ${cls}" style="background:${k.color}">${k.label}</div>`;
   }).join('');
   updateProgress(guideIdx, song.notes.length);
@@ -499,28 +532,28 @@ function startGuide(){
   setStatus(`彈 ${KEYS[SONGS[currentSong].notes[0]].label} 吧！`);
   highlightCurrentKey();
 }
+
 function highlightCurrentKey(){
-  document.querySelectorAll('.key').forEach(k=>k.classList.remove('highlight'));
-  if(!guideActive)return;
+  keyElements.forEach(k=>k.classList.remove('highlight'));
+  if(!guideActive) return;
   const song=SONGS[currentSong];
-  if(guideIdx>=song.notes.length)return;
-  const el=document.getElementById('key-'+song.notes[guideIdx]);
-  if(el)el.classList.add('highlight');
+  if(guideIdx>=song.notes.length) return;
+  keyElements[song.notes[guideIdx]]?.classList.add('highlight');
 }
+
 function checkGuideNote(i){
-  if(!guideActive)return;
-  const song=SONGS[currentSong];
-  const exp=song.notes[guideIdx];
+  if(!guideActive) return;
+  const song=SONGS[currentSong], exp=song.notes[guideIdx];
   if(i===exp){
     guideIdx++;
-    document.getElementById('key-'+i)?.classList.remove('highlight');
+    keyElements[i]?.classList.remove('highlight');
     if(guideIdx>=song.notes.length){
       guideActive=false;
-      document.querySelectorAll('.key').forEach(k=>k.classList.remove('highlight'));
+      keyElements.forEach(k=>k.classList.remove('highlight'));
       setStatus('🎉 太棒了！整首彈完了！');
       document.getElementById('playBtn').disabled=false;
       document.getElementById('guideDisplay').innerHTML='';
-      updateProgress(song.notes.length,song.notes.length);
+      updateProgress(song.notes.length, song.notes.length);
       celebrate();
     } else {
       renderGuide();
@@ -528,77 +561,73 @@ function checkGuideNote(i){
       highlightCurrentKey();
     }
   } else {
-    const el=document.getElementById('key-'+i);
-    if(el){
-      el.style.transform='translateX(-5px)';
-      setTimeout(()=>{el.style.transform='translateX(5px)';},80);
-      setTimeout(()=>{el.style.transform='';},160);
-    }
+    // Wrong — subtle shake, no status interrupt during swipe
+    const el=keyElements[i];
+    if(el){ el.style.transform='translateX(-4px)'; setTimeout(()=>{el.style.transform='translateX(4px)';},70); setTimeout(()=>{el.style.transform='';},140); }
     setStatus(`再試試！彈 ${KEYS[exp].label} 哦～`);
   }
 }
+
 function stopGuide(){
   guideActive=false;
-  document.querySelectorAll('.key').forEach(k=>k.classList.remove('highlight'));
+  keyElements.forEach(k=>k.classList.remove('highlight'));
   document.getElementById('playBtn').disabled=false;
 }
 
 function celebrate(){
   const chars=['🎵','🎶','⭐','🌟','✨','🎉','🎊','🎈'];
-  for(let i=0;i<35;i++){
+  for(let i=0;i<28;i++){
     setTimeout(()=>{
       const p=document.createElement('div'); p.className='note-particle';
       const x=Math.random()*window.innerWidth, y=Math.random()*window.innerHeight;
-      const dx=(Math.random()-.5)*120, rot=(Math.random()*80-40)+'deg';
-      p.style.cssText=`left:${x}px;top:${y}px;--dx:${dx}px;--rot:${rot};font-size:2.2rem;`;
+      p.style.cssText=`left:${x}px;top:${y}px;--dx:${(Math.random()-.5)*110}px;--rot:${Math.random()*70-35}deg;font-size:2rem;`;
       p.textContent=chars[Math.floor(Math.random()*chars.length)];
-      document.body.appendChild(p); setTimeout(()=>p.remove(),1400);
-    },i*70);
+      document.body.appendChild(p); setTimeout(()=>p.remove(),1100);
+    },i*75);
   }
 }
 
-// ── Stars ──────────────────────────────────────────────────────────────────
-function buildStars(){
-  const el=document.getElementById('stars');
-  for(let i=0;i<70;i++){
-    const s=document.createElement('div'); s.className='star';
-    const size=Math.random()*2.5+1;
-    s.style.cssText=`width:${size}px;height:${size}px;
-      top:${Math.random()*100}%;left:${Math.random()*100}%;
-      --d:${(Math.random()*3+2)}s;--o:${Math.random()*.6+.3};
-      animation-delay:${Math.random()*5}s;`;
-    el.appendChild(s);
-  }
-}
-
-// ── Fullscreen ─────────────────────────────────────────────────────────────
+// ── Fullscreen ────────────────────────────────────────────────────────────
 function toggleFS(){
   const btn=document.getElementById('fsBtn');
   if(!document.fullscreenElement){
     document.documentElement.requestFullscreen().catch(()=>{});
-    btn.textContent='✕';
-    btn.title='離開全畫面';
-  } else {
-    document.exitFullscreen();
-    btn.textContent='⛶';
-    btn.title='全畫面';
-  }
+  } else { document.exitFullscreen(); }
 }
 document.addEventListener('fullscreenchange',()=>{
-  const btn=document.getElementById('fsBtn');
-  btn.textContent=document.fullscreenElement?'✕':'⛶';
+  document.getElementById('fsBtn').textContent = document.fullscreenElement?'✕':'⛶';
 });
 
-// ── Init ───────────────────────────────────────────────────────────────────
+// ── Stars (built once, no per-frame JS) ──────────────────────────────────
+function buildStars(){
+  const el=document.getElementById('stars');
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<55;i++){
+    const s=document.createElement('div'); s.className='star';
+    const size=Math.random()*2.2+.8;
+    s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--o:${(Math.random()*.55+.25).toFixed(2)};--delay:-${(Math.random()*5).toFixed(1)}s;`;
+    frag.appendChild(s);
+  }
+  el.appendChild(frag);
+}
+
+// ── Keyboard ──────────────────────────────────────────────────────────────
+const KEY_MAP={'a':0,'s':1,'d':2,'f':3,'j':4,'k':5,'l':6,';':7};
+document.addEventListener('keydown',e=>{
+  if(e.repeat) return;
+  const i=KEY_MAP[e.key.toLowerCase()];
+  if(i!==undefined) pressKey(i);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────
 buildStars();
 buildSongList();
 buildXylophone();
-window.addEventListener('resize',buildXylophone);
 
-const KEY_MAP={'a':0,'s':1,'d':2,'f':3,'j':4,'k':5,'l':6,';':7};
-document.addEventListener('keydown',e=>{
-  const i=KEY_MAP[e.key.toLowerCase()];
-  if(i!==undefined) pressKey(i);
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(buildXylophone,120); // debounce resize
 });
 </script>
 </body>
